@@ -5,7 +5,7 @@ const Person = require('./models.js');
 
 const port = process.env.PORT || 3000;
 
-const app = express();
+const app = express(); // run express server as 'app'
 
 // error status code constants
 const STATUS_SERVER_ERROR = 500;
@@ -14,6 +14,57 @@ const STATUS_USER_ERROR = 422;
 app.use(bodyParser.json());
 
 // Your API will be built out here.
+app.get('/users', (req, res) => {
+  Person.find({}, (err, users) => {
+    if (err) {
+      res.status(STATUS_SERVER_ERROR);
+      res.json(err);
+    } else {
+      res.json(users);
+    }
+  });
+});
+
+app.get('/users/:direction', (req, res) => {
+  const { direction } = req.params;
+  let order = direction;
+  if (direction === 'asc') {
+    order = 1;
+  } else {
+    order = -1;
+  }
+  Person.find({})
+  .sort({ firstName : order })
+  .exec((err, users) => {
+    if (err) {
+      res.status(STATUS_SERVER_ERROR);
+      res.json({ error: err });
+    } else {
+      res.json(users);
+    }
+  });
+});
+
+app.get('/user-get-friends/:id', (req, res) => {
+  const { id } = req.params;
+
+  Person.findById(id, (err, user) => {
+    if (err) {
+      res.status(STATUS_USER_ERROR);
+      res.json(err);
+    } else {
+      res.json(user.friends);
+    }
+  });
+
+});
+
+
+
+
+
+
+
 
 
 
