@@ -59,16 +59,6 @@ app.get('/user-get-friends/:id', (req, res) => {
 
 });
 
-
-
-
-
-
-
-
-
-
-
 mongoose.Promise = global.Promise;
 const connect = mongoose.connect(
   'mongodb://localhost/people',
