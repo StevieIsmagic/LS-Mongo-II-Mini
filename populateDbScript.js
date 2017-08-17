@@ -1,16 +1,16 @@
-const Person = require('./models');
-const people = require('./people');
-const mongoose = require('mongoose');
+const Person = require('./models'); // person schema
+const people = require('./people'); // seed data
+const mongoose = require('mongoose'); // library that helps node interact w mongodb
 
 mongoose.Promise = global.Promise;
-mongoose.connect(
+mongoose.connect(                   // connects mongoDB to local host server
   'mongodb://localhost/people',
   { useMongoClient: true }
 );
 const populate = () => {
   const populatePeople = () => {
     const allPeople = people; 
-    const promises = allPeople.map(p => new Person(p).save());
+    const promises = allPeople.map(p => new Person(p).save()); // taking all ppl in seed data and running through person schema
     return Promise.all(promises);
   };
 
